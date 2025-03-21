@@ -23,6 +23,19 @@ namespace NLTDSimpleInventory.Web.Controllers
             return View();
         }
 
+        public IActionResult Test()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult TestList()
+        {
+            List<ErrorViewModel> list = new List<ErrorViewModel>();
+            list.Add(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            list.Add(new ErrorViewModel { RequestId = "testactivity" });
+            return View(list);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
