@@ -1,0 +1,36 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35913.81
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLTDSimpleInventory.Web", "NLTDSimpleInventory.Web\NLTDSimpleInventory.Web.csproj", "{B99CBD3D-1EF3-4FAD-94E6-382CEBD5E9FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLTDSimpleInventory.BusinessLayer", "NLTDSimpleInventory.BusinessLayer\NLTDSimpleInventory.BusinessLayer.csproj", "{2872E8A6-1B39-442B-AA6A-F9570495EB9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLTDSimpleInventory.DataLayer", "NLTDSimpleInventory.DataLayer\NLTDSimpleInventory.DataLayer.csproj", "{4C7C13B7-03A2-49AB-BE70-380E2CDB79D8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B99CBD3D-1EF3-4FAD-94E6-382CEBD5E9FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B99CBD3D-1EF3-4FAD-94E6-382CEBD5E9FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B99CBD3D-1EF3-4FAD-94E6-382CEBD5E9FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B99CBD3D-1EF3-4FAD-94E6-382CEBD5E9FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2872E8A6-1B39-442B-AA6A-F9570495EB9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2872E8A6-1B39-442B-AA6A-F9570495EB9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2872E8A6-1B39-442B-AA6A-F9570495EB9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2872E8A6-1B39-442B-AA6A-F9570495EB9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C7C13B7-03A2-49AB-BE70-380E2CDB79D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C7C13B7-03A2-49AB-BE70-380E2CDB79D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C7C13B7-03A2-49AB-BE70-380E2CDB79D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C7C13B7-03A2-49AB-BE70-380E2CDB79D8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7545FA4D-58D7-405D-AAFB-20F511348CF2}
+	EndGlobalSection
+EndGlobal
