@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using NLTDSimpleInventory.DataLayer.Models;
+
 namespace NLTDSimpleInventory.Web
 {
     public class Program
@@ -8,6 +11,9 @@ namespace NLTDSimpleInventory.Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<SimpleInventoryContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 
@@ -21,6 +27,8 @@ namespace NLTDSimpleInventory.Web
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.MapRazorPages();
 
             app.MapControllerRoute(
                 name: "default",
