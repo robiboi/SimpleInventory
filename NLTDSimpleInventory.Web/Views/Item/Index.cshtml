@@ -31,3 +31,43 @@
         </div>
     </div>
 </div>
+
+<!-- DataTable -->
+<div class="card mt-4">
+    <div class="card-header bg-secondary text-white">
+        <h5 class="mb-0">Items List</h5>
+    </div>
+    <div class="card-body">
+        <table id="itemsTable" class="display text-center align-middle">
+    <thead>
+        <tr>
+            <th>Item Name</th>
+            <th>Item SKU</th>
+            <th>Actions</th>
+		</tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.ItemSKU</td>
+                <td>
+                        <button class="btn btn-sm btn-warning px-4 py-1 edit-btn" data-id="@item.Id">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                        <button class="btn btn-sm btn-danger px-4 py-1 delete-btn" data-id="@item.Id">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                        <button class="btn btn-sm btn-primary px-4 py-1 borrow-btn" data-id="@item.Id">
+                        <i class="fa-solid fa-hand-holding-hand"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+    </div>
+</div>
+
+
