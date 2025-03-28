@@ -2,5 +2,34 @@
     ViewData["Title"] = "Items";
 }
 
-<h2>Items Page</h2>
-<p>Welcome to the Items page.</p>
+
+<button type="button" class="btn btn-primary add-button" data-bs-toggle="modal" data-bs-target="#addItemModal">
+    <i class="fas fa-plus"></i> Add Item
+</button>
+
+<div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addItemModalLabel">Add New Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addItemForm">
+                    <div class="mb-3">
+                        <label for="itemName" class="form-label">Item Name</label>
+                        <input type="text" class="form-control" id="itemName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="itemDescription" class="form-label">Item Description</label>
+                        <input type="text" class="form-control" id="itemDescription" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="addItemForm" class="btn btn-primary">Save Item</button>
+            </div>
+        </div>
+    </div>
+</div>
