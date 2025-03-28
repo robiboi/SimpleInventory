@@ -22,7 +22,7 @@ namespace NLTDSimpleInventory.DataLayer.Models
         [StringLength(255)]
         public required string Description { get; set; }   
 
-        public bool Available { get; set; }
+        public bool IsAvailable { get; set; }
         public required DateTime DateAdded { get; set; }   
         public required DateTime UpdatedAt { get; set; }  
         public DateTime? ArchivedDate { get; set; }   
