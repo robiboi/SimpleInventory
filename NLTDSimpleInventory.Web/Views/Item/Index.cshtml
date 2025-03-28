@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Items";
 }
+@model List<NLTDSimpleInventory.DataLayer.Models.Item>
 
 <button type="button" class="btn btn-primary add-button" data-bs-toggle="modal" data-bs-target="#addItemModal">
     <i class="fas fa-plus"></i> Add Item
@@ -32,7 +33,7 @@
     </div>
 </div>
 
-<!-- DataTable -->
+
 <div class="card mt-4">
     <div class="card-header bg-secondary text-white">
         <h5 class="mb-0">Items List</h5>

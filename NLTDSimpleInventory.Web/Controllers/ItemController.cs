@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NLTDSimpleInventory.BusinessLayer.Services;
 using NLTDSimpleInventory.DataLayer.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,16 +8,16 @@ namespace NLTDSimpleInventory.Controllers
 {
     public class ItemController : Controller
     {
-        private readonly SimpleInventoryContext _context;
+        private readonly ItemService _itemService; 
 
-        public ItemController(SimpleInventoryContext context)
+        public ItemController(ItemService itemService) 
         {
-            _context = context;
+            _itemService = itemService;
         }
 
         public IActionResult Index()
         {
-            var items = _context.Items.ToList(); 
+            var items = _itemService.GetAllItems(); 
             return View(items);
         }
     }
