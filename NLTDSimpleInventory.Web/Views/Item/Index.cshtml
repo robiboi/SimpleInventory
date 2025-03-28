@@ -1,6 +1,7 @@
-﻿@{
+@{
     ViewData["Title"] = "Items";
 }
+
 @model List<NLTDSimpleInventory.DataLayer.Models.Item>
 
 <button type="button" class="btn btn-primary add-button" data-bs-toggle="modal" data-bs-target="#addItemModal">
@@ -24,15 +25,15 @@
                         <label for="itemDescription" class="form-label">Item Description</label>
                         <input type="text" class="form-control" id="itemDescription" required>
                     </div>
-                    <div class="text-end">
-                        <button type="submit" class="btn btn-primary">Save Item</button>
-                    </div>
                 </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="addItemForm" class="btn btn-primary">Save Item</button>
             </div>
         </div>
     </div>
 </div>
-
 
 <div class="card mt-4">
     <div class="card-header bg-secondary text-white">
@@ -40,35 +41,33 @@
     </div>
     <div class="card-body">
         <table id="itemsTable" class="display text-center align-middle">
-    <thead>
-        <tr>
-            <th>Item Name</th>
-            <th>Item SKU</th>
-            <th>Actions</th>
-		</tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Name</td>
-                <td>@item.ItemSKU</td>
-                <td>
-                        <button class="btn btn-sm btn-warning px-4 py-1 edit-btn" data-id="@item.Id">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                        <button class="btn btn-sm btn-danger px-4 py-1 delete-btn" data-id="@item.Id">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                        <button class="btn btn-sm btn-primary px-4 py-1 borrow-btn" data-id="@item.Id">
-                        <i class="fa-solid fa-hand-holding-hand"></i>
-                    </button>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Item SKU</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.ItemSKU</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning px-4 py-1 edit-btn" data-id="@item.Id">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger px-4 py-1 delete-btn" data-id="@item.Id">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                            <button class="btn btn-sm btn-primary px-4 py-1 borrow-btn" data-id="@item.Id">
+                                <i class="fa-solid fa-hand-holding-hand"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
-
-
