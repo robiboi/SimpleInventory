@@ -67,3 +67,10 @@ body {
     margin-top: 15px;
     margin-left: -40px;
 }
+
+/* Datatable */
+#itemsTable th,
+#itemsTable td {
+    text-align: center;
+    vertical-align: middle;
+}
