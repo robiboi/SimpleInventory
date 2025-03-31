@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using NLTDSimpleInventory.BusinessLayer.Interfaces;
 using NLTDSimpleInventory.BusinessLayer.Services;
 using NLTDSimpleInventory.DataLayer.Models;
 
@@ -17,7 +18,7 @@ namespace NLTDSimpleInventory.Web
             builder.Services.AddDbContext<SimpleInventoryContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddScoped<ItemService>();
+            builder.Services.AddScoped<IItemService, ItemService>();
 
             var app = builder.Build();
 
