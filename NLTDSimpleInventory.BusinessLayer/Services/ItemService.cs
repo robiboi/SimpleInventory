@@ -7,7 +7,7 @@
     using System.Linq;
 
     public class ItemService : IItemService
-    {
+    { 
         private readonly SimpleInventoryContext _context;
 
         public ItemService(SimpleInventoryContext context)
