@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NLTDSimpleInventory.BusinessLayer.Interfaces;
-using NLTDSimpleInventory.DataLayer.Models;
-using System.Collections.Generic;
-using System.Linq;
+using NLTDSimpleInventory.Web.Models;
+
 
 namespace NLTDSimpleInventory.Controllers
 {
@@ -17,8 +16,18 @@ namespace NLTDSimpleInventory.Controllers
 
         public IActionResult Index()
         {
-            var items = _itemService.GetAllItems(); 
-            return View(items);
+            var items = _itemService.GetAllItems();
+            
+            var viewModel = items.Select(item => new ItemViewModel
+            {
+                Id = item.Id,
+                ItemSKU = item.ItemSKU,
+                Name = item.Name,
+                Description = item.Description,
+                IsAvailable = item.IsAvailable
+            }).ToList();
+
+            return View(viewModel);
         }
     }
 }

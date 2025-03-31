@@ -2,7 +2,6 @@
 {
     using NLTDSimpleInventory.BusinessLayer.Interfaces;
     using NLTDSimpleInventory.DataLayer.Models;
-    using NLTDSimpleInventory.DataLayer;
     using System.Collections.Generic;
     using System.Linq;
 
