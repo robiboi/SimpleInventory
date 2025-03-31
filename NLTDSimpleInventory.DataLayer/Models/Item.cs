@@ -23,7 +23,6 @@ namespace NLTDSimpleInventory.DataLayer.Models
         public required string Description { get; set; }   
 
         public bool IsAvailable { get; set; }
-        public string AvailabilityStatus => IsAvailable ? "Available" : "Borrowed";
         public required DateTime DateAdded { get; set; }   
         public required DateTime UpdatedAt { get; set; }  
         public DateTime? ArchivedDate { get; set; }   
