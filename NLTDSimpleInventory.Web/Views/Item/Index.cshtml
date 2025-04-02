@@ -12,14 +12,14 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addItemForm">
+                <form id="addItemForm" method="post" asp-action="AddItem" asp-controller="Item">
                     <div class="mb-3">
                         <label for="itemName" class="form-label">Item Name</label>
-                        <input type="text" class="form-control" id="itemName" required>
+                        <input type="text" class="form-control" id="itemName" name="Name" required>
                     </div>
                     <div class="mb-3">
                         <label for="itemDescription" class="form-label">Item Description</label>
-                        <input type="text" class="form-control" id="itemDescription" required>
+                        <input type="text" class="form-control" id="itemDescription" name="Description" required>
                     </div>
                 </form>
             </div>
