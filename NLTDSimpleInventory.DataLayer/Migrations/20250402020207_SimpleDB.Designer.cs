@@ -12,8 +12,8 @@ using NLTDSimpleInventory.DataLayer.Models;
 namespace NLTDSimpleInventory.DataLayer.Migrations
 {
     [DbContext(typeof(SimpleInventoryContext))]
-    [Migration("20250325024618_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250402020207_SimpleDB")]
+    partial class SimpleDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,11 +64,19 @@ namespace NLTDSimpleInventory.DataLayer.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LastUpdated")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -83,13 +91,32 @@ namespace NLTDSimpleInventory.DataLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime?>("ArchivedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ItemSKU")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -98,17 +125,31 @@ namespace NLTDSimpleInventory.DataLayer.Migrations
 
             modelBuilder.Entity("NLTDSimpleInventory.DataLayer.Models.BorrowedItem", b =>
                 {
-                    b.HasOne("NLTDSimpleInventory.DataLayer.Models.Borrower", null)
-                        .WithMany()
+                    b.HasOne("NLTDSimpleInventory.DataLayer.Models.Borrower", "Borrower")
+                        .WithMany("BorrowedItems")
                         .HasForeignKey("BorrowerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("NLTDSimpleInventory.DataLayer.Models.Item", null)
-                        .WithMany()
+                    b.HasOne("NLTDSimpleInventory.DataLayer.Models.Item", "Item")
+                        .WithMany("BorrowedItems")
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Borrower");
+
+                    b.Navigation("Item");
+                });
+
+            modelBuilder.Entity("NLTDSimpleInventory.DataLayer.Models.Borrower", b =>
+                {
+                    b.Navigation("BorrowedItems");
+                });
+
+            modelBuilder.Entity("NLTDSimpleInventory.DataLayer.Models.Item", b =>
+                {
+                    b.Navigation("BorrowedItems");
                 });
 #pragma warning restore 612, 618
         }
