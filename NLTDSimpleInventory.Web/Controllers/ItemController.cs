@@ -45,12 +45,52 @@ namespace NLTDSimpleInventory.Controllers
                 Description = model.Description,
                 ItemSKU = Guid.NewGuid().ToString(),
                 DateAdded = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
                 IsAvailable = true
             };
 
             _itemService.AddItem(newItem);
             TempData["SuccessMessage"] = "Item added successfully!";
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult EditItem(int id)
+        {
+            var item = _itemService.GetAllItems().FirstOrDefault(i => i.Id == id);
+            if (item == null)
+            {
+                return NotFound();  
+            }
+
+            var editModel = new AddItemModel
+            {
+                Name = item.Name,
+                Description = item.Description
+            };
+
+            return PartialView("_EditItemModal", editModel);   
+        }
+
+        [HttpPost]
+        public IActionResult EditItem(int id, AddItemModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid input.");
+            }
+
+            var item = _itemService.GetAllItems().FirstOrDefault(i => i.Id == id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            item.Name = model.Name;
+            item.Description = model.Description;
+            item.UpdatedAt = DateTime.UtcNow;
+
+            _itemService.UpdateItem(item);
+
+            TempData["SuccessMessage"] = "Item updated successfully!";
             return RedirectToAction("Index");
         }
     }

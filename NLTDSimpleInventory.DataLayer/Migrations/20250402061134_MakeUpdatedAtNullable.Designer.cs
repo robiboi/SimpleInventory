@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NLTDSimpleInventory.DataLayer.Models;
 
@@ -11,9 +12,11 @@ using NLTDSimpleInventory.DataLayer.Models;
 namespace NLTDSimpleInventory.DataLayer.Migrations
 {
     [DbContext(typeof(SimpleInventoryContext))]
-    partial class SimpleInventoryContextModelSnapshot : ModelSnapshot
+    [Migration("20250402061134_MakeUpdatedAtNullable")]
+    partial class MakeUpdatedAtNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

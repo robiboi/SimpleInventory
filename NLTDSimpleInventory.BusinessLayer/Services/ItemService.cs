@@ -30,6 +30,23 @@
             _context.SaveChanges();
         }
 
+        public void UpdateItem(Item item)
+        {
+            var existingItem = _context.Items.FirstOrDefault(i => i.Id == item.Id);
+            if (existingItem == null)
+            {
+                throw new InvalidOperationException("Item not found.");
+            }
+
+            existingItem.Name = item.Name;
+            existingItem.Description = item.Description;
+            existingItem.UpdatedAt = DateTime.Now;
+
+            _context.Items.Update(existingItem);
+            _context.SaveChanges();
+        }
+
+
         private string GenerateSKU(string name)
         {
             string prefix = name.Length >= 3 ? name.Substring(0, 3).ToUpper() : "SKU";
