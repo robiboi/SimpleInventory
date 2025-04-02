@@ -59,10 +59,5 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
-    <script>
-        $(document).ready(function () {
-            $('#itemsTable').DataTable();
-        });
-    </script>
 </body>
 </html>
