@@ -18,7 +18,9 @@ namespace NLTDSimpleInventory.DataLayer.Models
         [Required]
         [StringLength(255)]
         public required string Address { get; set; }
-        public required DateTime DateAdded { get; set; } = DateTime.UtcNow;
+        public DateTime? DateAdded { get; set; } = DateTime.UtcNow;
         public DateTime? LastUpdated { get; set; } = DateTime.UtcNow;
+
+        public List<BorrowedItem> BorrowedItems { get; set; } = [];
     }
 }

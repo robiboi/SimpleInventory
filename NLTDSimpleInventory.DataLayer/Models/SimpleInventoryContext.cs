@@ -18,14 +18,14 @@ namespace NLTDSimpleInventory.DataLayer.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BorrowedItem>()
-                .HasOne<Item>()
-                .WithMany()
+                .HasOne(b => b.Item)
+                .WithMany(b => b.BorrowedItems)
                 .HasForeignKey(b => b.ItemId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<BorrowedItem>()
-                .HasOne<Borrower>()
-                .WithMany()
+                .HasOne(b => b.Borrower)
+                .WithMany(b => b.BorrowedItems)
                 .HasForeignKey(b => b.BorrowerId)
                 .OnDelete(DeleteBehavior.Cascade);
         }

@@ -25,7 +25,8 @@ namespace NLTDSimpleInventory.DataLayer.Models
         public bool IsAvailable { get; set; }
         public required DateTime DateAdded { get; set; }   
         public required DateTime UpdatedAt { get; set; }  
-        public DateTime? ArchivedDate { get; set; }   
+        public DateTime? ArchivedDate { get; set; }
 
+        public List<BorrowedItem> BorrowedItems { get; set; } = [];
     }
 }
