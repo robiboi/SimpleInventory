@@ -2,5 +2,38 @@
     ViewData["Title"] = "Borrowers";
 }
 
-<h2>Borrowers Page</h2>
-<p>Welcome to the Borrowers page.</p>
+@model List<NLTDSimpleInventory.Web.Models.BorrowersViewModel>
+
+<div class="card mt-5">
+    <div class="card-header bg-border text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 text-dark">BORROWERS</h5>
+    </div>
+    <div class="card-body">
+        <table id="itemsTable" class="display text-center align-middle small">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var borrower in Model)
+                {
+                    <tr>
+                        <td>@borrower.Name</td>
+                        <td>@borrower.Address</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning px-3 py-0 edit-btn" data-id="@borrower.Id">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger px-3 py-0 delete-btn" data-id="@borrower.Id">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

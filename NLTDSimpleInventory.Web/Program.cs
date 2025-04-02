@@ -19,6 +19,8 @@ namespace NLTDSimpleInventory.Web
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddScoped<IItemService, ItemService>();
+            builder.Services.AddScoped<IBorrowerService, BorrowerService>();
+
 
             var app = builder.Build();
 
