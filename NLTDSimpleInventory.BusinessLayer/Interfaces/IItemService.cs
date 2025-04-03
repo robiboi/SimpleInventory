@@ -8,5 +8,7 @@
         List<Item> GetAllItems();
         void AddItem(Item item);
         void UpdateItem(Item item);
+        void ArchiveItem(int id);
+
     }
 }
