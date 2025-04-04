@@ -17,7 +17,7 @@
 
         public List<Item> GetAllItems()
         {
-            return _context.Items.ToList(); 
+            return _context.Items.Where(i => i.ArchivedDate == null).ToList();
         }
 
         public void AddItem(Item item)
@@ -46,6 +46,18 @@
             _context.SaveChanges();
         }
 
+        public void ArchiveItem(int id)
+        {
+            var item = _context.Items.FirstOrDefault(i => i.Id == id);
+            if (item == null)
+            {
+                throw new InvalidOperationException("Item not found.");
+            }
+
+            item.ArchivedDate = DateTime.Now; 
+            _context.Items.Update(item);
+            _context.SaveChanges();
+        }
 
         private string GenerateSKU(string name)
         {

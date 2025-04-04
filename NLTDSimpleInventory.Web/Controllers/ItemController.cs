@@ -93,5 +93,22 @@ namespace NLTDSimpleInventory.Controllers
             TempData["SuccessMessage"] = "Item updated successfully!";
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public IActionResult ArchiveItem(int id)
+        {
+            try
+            {
+                _itemService.ArchiveItem(id);
+                TempData["SuccessMessage"] = "Item archived successfully!";
+            }
+            catch (InvalidOperationException)
+            {
+                TempData["ErrorMessage"] = "Item not found!";
+                return NotFound();
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }
