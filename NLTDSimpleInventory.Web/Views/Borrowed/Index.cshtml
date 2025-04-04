@@ -2,5 +2,41 @@
     ViewData["Title"] = "Borrowed";
 }
 
-<h2>Borrowed Items Page</h2>
-<p>Welcome to the Borrowed Items page.</p>
+@model List<NLTDSimpleInventory.Web.Models.BorrowedViewModel>
+
+
+<div class="card mt-5">
+    <div class="card-header bg-border text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 text-dark">BORROWED ITEMS</h5>
+    </div>
+    <div class="card-body">
+        <table id="itemsTable" class="display text-center align-middle small">
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Borrower</th>
+                    <th>Date Borrowed</th>
+                    <th>Date Returned</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var borrowedItem in Model)
+                {
+                    <tr>
+                        <td>@borrowedItem.ItemName</td>
+                        <td>@borrowedItem.Borrower</td>
+                        <td>@borrowedItem.DateBorrowed</td>
+                        <td>@borrowedItem.DateReturned</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary px-3 py-0 return-btn" data-id="">
+                                <i class="fa-solid fa-circle-arrow-down"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+   </div>
+</div>
+

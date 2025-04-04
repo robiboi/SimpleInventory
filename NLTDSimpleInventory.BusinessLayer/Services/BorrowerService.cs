@@ -3,7 +3,7 @@
     using NLTDSimpleInventory.BusinessLayer.Interfaces;
     using NLTDSimpleInventory.DataLayer.Models;
     using System.Collections.Generic;
-    using System.Linq;
+    
 
     public class BorrowerService : IBorrowerService
     {

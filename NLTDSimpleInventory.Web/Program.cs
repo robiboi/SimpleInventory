@@ -20,6 +20,8 @@ namespace NLTDSimpleInventory.Web
 
             builder.Services.AddScoped<IItemService, ItemService>();
             builder.Services.AddScoped<IBorrowerService, BorrowerService>();
+            builder.Services.AddScoped<IBorrowedService, BorrowedService>();
+
 
 
             var app = builder.Build();
