@@ -26,7 +26,7 @@
             item.DateAdded = DateTime.Now;
             item.IsAvailable = true;
 
-            _context.Items.Add(item);
+            _context.Items.Add(item);   
             _context.SaveChanges();
         }
 
