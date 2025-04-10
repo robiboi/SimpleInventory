@@ -65,7 +65,6 @@ namespace NLTDSimpleInventory.DataLayer.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("DateAdded")
-
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("LastUpdated")
@@ -114,7 +113,6 @@ namespace NLTDSimpleInventory.DataLayer.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime?>("UpdatedAt")
-
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");

@@ -6,5 +6,6 @@
     public interface IBorrowerService
     {
         List<Borrower> GetAllBorrowers();
+        void UpdateBorrower(Borrower borrower);
     }
 }

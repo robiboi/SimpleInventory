@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NLTDSimpleInventory.DataLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class SimpleDB : Migration
+    public partial class LatestDB04042025 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,7 +38,7 @@ namespace NLTDSimpleInventory.DataLayer.Migrations
                     Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
                     DateAdded = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ArchivedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>

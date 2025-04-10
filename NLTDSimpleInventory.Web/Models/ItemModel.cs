@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class AddItemModel
+    public class ItemModel
     {
         public required string Name { get; set; }
 

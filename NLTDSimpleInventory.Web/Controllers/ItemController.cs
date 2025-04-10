@@ -32,7 +32,7 @@ namespace NLTDSimpleInventory.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddItem(AddItemModel model)
+        public IActionResult AddItem(ItemModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -49,10 +49,11 @@ namespace NLTDSimpleInventory.Controllers
             };
 
             _itemService.AddItem(newItem);
-            TempData["SuccessMessage"] = "Item added successfully!";
+            TempData["ItemAddMsg"] = "Item added successfully!";
             return RedirectToAction("Index");
         }
 
+        // GET: Show the edit form with current item data
         public IActionResult EditItem(int id)
         {
             var item = _itemService.GetAllItems().FirstOrDefault(i => i.Id == id);
@@ -61,7 +62,7 @@ namespace NLTDSimpleInventory.Controllers
                 return NotFound();  
             }
 
-            var editModel = new AddItemModel
+            var editModel = new ItemModel
             {
                 Name = item.Name,
                 Description = item.Description
@@ -70,8 +71,9 @@ namespace NLTDSimpleInventory.Controllers
             return PartialView("_EditItemModal", editModel);   
         }
 
+        // POST: Update item details
         [HttpPost]
-        public IActionResult EditItem(int id, AddItemModel model)
+        public IActionResult EditItem(int id, ItemModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -90,7 +92,7 @@ namespace NLTDSimpleInventory.Controllers
 
             _itemService.UpdateItem(item);
 
-            TempData["SuccessMessage"] = "Item updated successfully!";
+            TempData["ItemUpdateMsg"] = "Item updated successfully!";
             return RedirectToAction("Index");
         }
 
@@ -100,7 +102,7 @@ namespace NLTDSimpleInventory.Controllers
             try
             {
                 _itemService.ArchiveItem(id);
-                TempData["SuccessMessage"] = "Item archived successfully!";
+                TempData["ItemArchiveMsg"] = "Item archived successfully!";
             }
             catch (InvalidOperationException)
             {
