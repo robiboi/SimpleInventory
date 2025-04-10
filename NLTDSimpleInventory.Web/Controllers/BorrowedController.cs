@@ -21,13 +21,21 @@ namespace NLTDSimpleInventory.Web.Controllers
             var viewModel = borrowedItems.Select(b => new BorrowedViewModel
             {
                 Id = b.Id,
-                ItemName = b.Item?.Name,
-                Borrower = b.Borrower?.Name,
+                ItemName = b.Item.Name,
+                Borrower = b.Borrower.Name,
                 DateBorrowed = b.DateBorrowed.ToString("yyyy-MM-dd"),
                 DateReturnedRaw = b.DateReturned
             }).ToList();
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult ReturnItem(int id)
+        {
+            _borrowedItemService.ReturnBorrowedItem(id);
+            TempData["ReturnSuccess"] = "Item returned successfully!";
+            return RedirectToAction("Index");
         }
     }
 }
