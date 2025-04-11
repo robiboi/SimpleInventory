@@ -27,6 +27,28 @@ namespace NLTDSimpleInventory.BusinessLayer.Services
                 .ToList();
         }
 
+        public void AddBorrowedItem(int itemId, int borrowerId, DateTime dateBorrowed)
+        {
+            var borrowed = new BorrowedItem
+            {
+                ItemId = itemId,
+                BorrowerId = borrowerId,
+                DateBorrowed = dateBorrowed
+            };
+            _context.BorrowedItems.Add(borrowed);
+            _context.SaveChanges();
+        }
+
+        public void MarkItemAsUnavailable(int itemId)
+        {
+            var item = _context.Items.FirstOrDefault(i => i.Id == itemId);
+            if (item != null)
+            {
+                item.IsAvailable = false;  
+                _context.SaveChanges();
+            }
+        }
+        
         public void ReturnBorrowedItem(int id)
         {
             var borrowedItem = _context.BorrowedItems.FirstOrDefault(b => b.Id == id);
