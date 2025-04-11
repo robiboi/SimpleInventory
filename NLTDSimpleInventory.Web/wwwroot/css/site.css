@@ -74,4 +74,27 @@ body {
     vertical-align: middle;
 }
 
+/* borrowers name dropdown */
+
+#borrowerResults {
+    position: absolute;
+    z-index: 1050;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    border-radius: 0.25rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+#borrowerResults .dropdown-item {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+#borrowerResults .dropdown-item:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+
 
