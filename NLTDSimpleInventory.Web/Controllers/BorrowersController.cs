@@ -3,7 +3,6 @@ using NLTDSimpleInventory.BusinessLayer.Interfaces;
 using NLTDSimpleInventory.BusinessLayer.Services;
 using NLTDSimpleInventory.DataLayer.Models;
 using NLTDSimpleInventory.Web.Models;
-using System.Linq;
 
 namespace NLTDSimpleInventory.Web.Controllers
 {
@@ -35,6 +34,39 @@ namespace NLTDSimpleInventory.Web.Controllers
             }).ToList();
 
             return View(viewModel);
+        }
+
+        [HttpGet]
+        public IActionResult Create(string newBorrowerName, string newBorrowerAddress, int itemId, DateTime dateBorrowed)
+        {
+            if (string.IsNullOrWhiteSpace(newBorrowerName) || string.IsNullOrWhiteSpace(newBorrowerAddress))
+            {
+                TempData["Error"] = "Please provide the new borrower's name and address.";
+                return RedirectToAction("Index", "Item");
+            }
+
+            var newBorrower = _borrowerService.AddNewBorrower(newBorrowerName, newBorrowerAddress);
+
+            return RedirectToAction("Borrow", "Borrowed", new
+            {
+                itemId,
+                borrowerId = newBorrower.Id,
+                dateBorrowed = dateBorrowed.ToString("yyyy-MM-dd")
+            });
+        }
+
+        [HttpGet]
+        public IActionResult SearchBorrowers(string query)
+        {
+            var borrowers = _borrowerService.SearchBorrowersByName(query);
+
+            var results = borrowers.Select(b => new BorrowerSearchResultViewModel
+            {
+                Id = b.Id,
+                Name = b.Name
+            }).ToList();
+
+            return Json(results);
         }
 
         // GET: Show the edit form with current borrower data
@@ -79,6 +111,5 @@ namespace NLTDSimpleInventory.Web.Controllers
             TempData["BorrowerUpdateMsg"] = "Borrower updated successfully!";
             return RedirectToAction("Index");
         }
-
     }
 }

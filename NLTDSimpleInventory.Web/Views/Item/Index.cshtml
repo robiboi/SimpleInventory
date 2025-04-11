@@ -4,6 +4,13 @@
 
 @model List<NLTDSimpleInventory.Web.Models.ItemViewModel>
 
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
 <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -117,7 +124,6 @@
                             <button class="btn btn-sm btn-warning px-3 py-0 edit-btn" data-id="@item.Id" @(item.AvailabilityStatus == "Borrowed" ? "disabled" : "")>
                                 <i class="fas fa-edit"></i>
                             </button>
-
                             <!-- Archive Form -->
                             <form id="archiveForm-@item.Id" method="post" asp-action="ArchiveItem" asp-controller="Item" style="display:inline;">
                                 <input type="hidden" name="id" value="@item.Id" />
@@ -125,10 +131,9 @@
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
-
                             <!-- Borrow Button -->
-                            <button class="btn btn-sm btn-primary px-3 py-0 borrow-btn" data-id="@item.Id" @(item.AvailabilityStatus == "Borrowed" ? "disabled" : "")>
-                                <i class="fa-solid fa-hand-holding-hand"></i>
+                            <button class="btn btn-sm btn-primary px-3 py-0 borrow-btn" data-bs-toggle="modal" data-bs-target="#borrowItemModal" data-id="@item.Id" data-name="@item.Name" @(item.AvailabilityStatus == "Borrowed" ? "disabled" : "")>
+                                 <i class="fa-solid fa-hand-holding-hand"></i>
                             </button>
                         </td>
                     </tr>
@@ -137,3 +142,54 @@
         </table>
     </div>
 </div>
+
+
+<!-- Borrow Item Modal -->
+<div class="modal fade" id="borrowItemModal" tabindex="-1" aria-labelledby="borrowItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/Borrowed/Borrow" method="post">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="borrowItemModalLabel">Borrow Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="ItemInput" class="form-label">Item Name</label>
+                    <input type="text" id="ItemInput" class="form-control" readonly>
+                    <input type="hidden" id="selectedItemId" name="ItemId">
+                </div>
+
+                <div class="mb-4 position-relative">
+                    <label for="searchBorrowerInput" class="form-label">Borrower Name</label>
+                    <input type="text" id="searchBorrowerInput" class="form-control" autocomplete="off">
+                    <div id="borrowerResults" class="list-group"></div>
+                        <input type="hidden" id="selectedBorrowerId" name="SelectedBorrowerId">
+                    <small class="text-muted">If you are an old borrower, just enter your name. If new, check the box below.</small>
+                </div>
+                <div class="mb-4 form-check">
+                    <input type="checkbox" class="form-check-input" id="IsNewBorrower" name="IsNewBorrower" value="true" />
+                    <label class="form-check-label" for="IsNewBorrower">New Borrower?</label>
+                </div>
+
+                <div id="newBorrowerFields" style="display: none;">
+                    <div class="mb-3">
+                        <label for="NewBorrowerName" class="form-label">Borrower's Name</label>
+                        <input type="text" id="NewBorrowerName" class="form-control" placeholder="Enter name" name="NewBorrowerName" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="NewBorrowerAddress" class="form-label">Address</label>
+                        <input type="text" id="NewBorrowerAddress" class="form-control" placeholder="Enter address" name="NewBorrowerAddress" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="borrowButton">Borrow</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
