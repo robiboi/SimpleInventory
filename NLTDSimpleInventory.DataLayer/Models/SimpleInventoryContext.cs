@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace NLTDSimpleInventory.DataLayer.Models
 {
@@ -19,15 +14,15 @@ namespace NLTDSimpleInventory.DataLayer.Models
         {
             modelBuilder.Entity<BorrowedItem>()
                 .HasOne(b => b.Item)
-                .WithMany(b => b.BorrowedItems)
+                .WithMany(i => i.BorrowedItems)
                 .HasForeignKey(b => b.ItemId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<BorrowedItem>()
                 .HasOne(b => b.Borrower)
                 .WithMany(b => b.BorrowedItems)
                 .HasForeignKey(b => b.BorrowerId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

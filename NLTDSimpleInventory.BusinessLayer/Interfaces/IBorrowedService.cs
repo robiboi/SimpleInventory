@@ -6,5 +6,7 @@ namespace NLTDSimpleInventory.BusinessLayer.Interfaces
     public interface IBorrowedService
     {
         List<BorrowedItem> GetAllBorrowedItems();
+        void ReturnBorrowedItem(int id);
+
     }
 }

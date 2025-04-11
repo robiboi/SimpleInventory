@@ -12,8 +12,8 @@ using NLTDSimpleInventory.DataLayer.Models;
 namespace NLTDSimpleInventory.DataLayer.Migrations
 {
     [DbContext(typeof(SimpleInventoryContext))]
-    [Migration("20250402065747_SimpleDB")]
-    partial class SimpleDB
+    [Migration("20250404083209_LatestDB04042025")]
+    partial class LatestDB04042025
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -67,7 +67,7 @@ namespace NLTDSimpleInventory.DataLayer.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<DateTime?>("DateAdded")
+                    b.Property<DateTime>("DateAdded")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("LastUpdated")
@@ -115,7 +115,7 @@ namespace NLTDSimpleInventory.DataLayer.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -128,13 +128,13 @@ namespace NLTDSimpleInventory.DataLayer.Migrations
                     b.HasOne("NLTDSimpleInventory.DataLayer.Models.Borrower", "Borrower")
                         .WithMany("BorrowedItems")
                         .HasForeignKey("BorrowerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("NLTDSimpleInventory.DataLayer.Models.Item", "Item")
                         .WithMany("BorrowedItems")
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Borrower");
