@@ -8,6 +8,6 @@ namespace NLTDSimpleInventory.BusinessLayer.Interfaces
         List<BorrowedItem> GetAllBorrowedItems();
         void AddBorrowedItem(int itemId, int borrowerId, DateTime dateBorrowed);
         void MarkItemAsUnavailable(int itemId);
-
+        void ReturnBorrowedItem(int id);
     }
 }

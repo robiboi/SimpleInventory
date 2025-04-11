@@ -45,7 +45,24 @@ namespace NLTDSimpleInventory.BusinessLayer.Services
             if (item != null)
             {
                 item.IsAvailable = false;  
-                _context.SaveChanges();    
+                _context.SaveChanges();
+            }
+        }
+        
+        public void ReturnBorrowedItem(int id)
+        {
+            var borrowedItem = _context.BorrowedItems.FirstOrDefault(b => b.Id == id);
+            if (borrowedItem != null && borrowedItem.DateReturned == null)
+            {
+                borrowedItem.DateReturned = DateTime.UtcNow;
+
+                var item = _context.Items.FirstOrDefault(i => i.Id == borrowedItem.ItemId);
+                if (item != null)
+                {
+                    item.IsAvailable = true;
+                }
+
+                _context.SaveChanges();
             }
         }
     }

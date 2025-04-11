@@ -8,5 +8,6 @@
         List<Borrower> GetAllBorrowers();
         IEnumerable<Borrower> SearchBorrowersByName(string query);
         Borrower AddNewBorrower(string name, string address);
+        void UpdateBorrower(Borrower borrower);
     }
 }
