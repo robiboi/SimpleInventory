@@ -1,5 +1,6 @@
 ﻿namespace NLTDSimpleInventory.BusinessLayer.Services
 {
+    using Microsoft.EntityFrameworkCore;
     using NLTDSimpleInventory.BusinessLayer.Interfaces;
     using NLTDSimpleInventory.DataLayer.Models;
     using System.Collections.Generic;
@@ -15,7 +16,10 @@
 
         public List<Borrower> GetAllBorrowers()
         {
-            return _context.Borrowers.ToList();
+            return _context.Borrowers
+                .Include(b => b.BorrowedItems)
+                    .ThenInclude(bi => bi.Item) 
+                .ToList();
         }
 
         public IEnumerable<Borrower> SearchBorrowersByName(string query)

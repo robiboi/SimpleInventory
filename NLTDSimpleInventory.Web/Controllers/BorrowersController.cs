@@ -23,7 +23,14 @@ namespace NLTDSimpleInventory.Web.Controllers
             {
                 Id = b.Id,
                 Name = b.Name,
-                Address = b.Address
+                Address = b.Address,
+                BorrowHistory = b.BorrowedItems.Select(bi => new BorrowedItemHistoryViewModel
+                {
+                    ItemName = bi.Item.Name,
+                    ItemSKU = bi.Item.ItemSKU,
+                    DateBorrowed = bi.DateBorrowed.ToString("yyyy-MM-dd"),
+                    DateReturned = bi.DateReturned?.ToString("yyyy-MM-dd") ?? "Not Returned"
+                }).ToList()
             }).ToList();
 
             return View(viewModel);
