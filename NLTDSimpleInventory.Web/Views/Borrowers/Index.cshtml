@@ -1,7 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Borrowers";
 }
-
 @model List<NLTDSimpleInventory.Web.Models.BorrowersViewModel>
 
 <div class="card mt-5">
@@ -9,9 +8,10 @@
         <h5 class="mb-0 text-dark">BORROWERS</h5>
     </div>
     <div class="card-body">
-        <table id="itemsTable" class="display text-center align-middle small">
+        <table id="itemsTable" class="display text-center align-middle small" style="width:100%"  data-borrowers='@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model))'>
             <thead>
                 <tr>
+                    <th></th> 
                     <th>Name</th>
                     <th>Address</th>
                     <th>Actions</th>
@@ -20,7 +20,10 @@
             <tbody>
                 @foreach (var borrower in Model)
                 {
-                    <tr>
+                    <tr data-borrower-id="@borrower.Id">
+                        <td class="details-control" style="cursor: pointer;">
+                            <i class="fas fa-caret-down"></i>
+                        </td>
                         <td>@borrower.Name</td>
                         <td>@borrower.Address</td>
                         <td>
