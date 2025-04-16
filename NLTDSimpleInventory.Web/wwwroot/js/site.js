@@ -1,12 +1,11 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿document.addEventListener("DOMContentLoaded", function () {
 
-// Write your JavaScript code.
+    const itemsTable = document.querySelector('#itemsTable');
+    if (!itemsTable) return;
 
-document.addEventListener("DOMContentLoaded", function () {
+    const borrowersData = JSON.parse(itemsTable.getAttribute('data-borrowers'));
+    const columnCount = itemsTable.querySelectorAll('thead th').length;
 
-    const borrowersData = JSON.parse(document.querySelector('#itemsTable').getAttribute('data-borrowers'));
-    const columnCount = document.querySelectorAll('#itemsTable thead th').length;
     const table = $('#itemsTable').DataTable({
         responsive: true,
         order: [],
@@ -49,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     $('#itemsTable tbody').on('click', 'td.details-control', function () {
         const tr = $(this).closest('tr');
-        const row = table.row(tr); 
+        const row = table.row(tr);
         const borrowerId = tr.data('borrower-id');
 
         if (row.child.isShown()) {
@@ -78,15 +77,17 @@ document.addEventListener("DOMContentLoaded", function () {
     const itemInput = document.getElementById("ItemInput");
     const itemIdInput = document.getElementById("selectedItemId");
 
-    borrowButtons.forEach(button => {
-        button.addEventListener("click", function () {
-            const itemName = this.getAttribute("data-name");
-            const itemId = this.getAttribute("data-id");
+    if (itemInput && itemIdInput) {
+        borrowButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const itemName = this.getAttribute("data-name");
+                const itemId = this.getAttribute("data-id");
 
-            itemInput.value = itemName;
-            itemIdInput.value = itemId;
+                itemInput.value = itemName;
+                itemIdInput.value = itemId;
+            });
         });
-    });
+    }
 
     if (searchBorrowerInput) {
         searchBorrowerInput.addEventListener("input", function () {
@@ -102,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (successMessage) {
         setTimeout(function () {
             successMessage.style.display = "none";
-        }, 5000); 
+        }, 5000);
     }
 
     // Item Edit Modal
@@ -140,15 +141,34 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Archive item logic
+    // Archive item Modal
+    let selectedArchiveForm = null;
+
     document.querySelectorAll('.archive-btn').forEach(button => {
         button.addEventListener('click', function () {
-            var itemId = this.getAttribute('data-id');
-            if (confirm('Are you sure you want to archive this item?')) {
-                var form = document.querySelector('#archiveForm-' + itemId);
-                form.submit();
-            }
+            const itemId = this.getAttribute('data-id');
+            const itemName = this.getAttribute('data-name');
+
+            // Set the correct form and item name dynamically
+            selectedArchiveForm = document.querySelector(`#archiveForm-${itemId}`);
+            document.getElementById('archiveItemId').value = itemId; // Set the item ID in hidden field
+            document.getElementById('archiveItemName').textContent = itemName; // Set the item name in the modal
+
+            const archiveModal = new bootstrap.Modal(document.getElementById('archiveConfirmModal'));
+            archiveModal.show();
         });
+    });
+
+    // Return item Modal
+    const returnModalEl = document.getElementById('returnConfirmModal');
+
+    returnModalEl.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const itemId = button.getAttribute('data-id');
+        const itemName = button.getAttribute('data-name');
+
+        document.getElementById('returnItemId').value = itemId;
+        document.getElementById('returnItemName').textContent = itemName;
     });
 
     // Auto-hide alerts
