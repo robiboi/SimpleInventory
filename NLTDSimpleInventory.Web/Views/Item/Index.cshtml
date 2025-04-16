@@ -3,40 +3,8 @@
 }
 
 @model List<NLTDSimpleInventory.Web.Models.ItemViewModel>
+@await Html.PartialAsync("_FeedbackMessages")
 
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["Success"]
-    </div>
-}
-
-@if (TempData["ItemAddMsg"] != null)
-{
-    <div class="alert alert-success" id="successMessage">
-        @TempData["ItemAddMsg"]
-    </div>
-}
-@if (TempData["ItemUpdateMsg"] != null)
-{
-    <div class="alert alert-success" id="successMessage">
-        @TempData["ItemUpdateMsg"]
-    </div>
-}
-@if (TempData["ItemArchiveMsg"] != null)
-{
-    <div class="alert alert-success" id="successMessage">
-        @TempData["ItemArchiveMsg"]
-    </div>
-}
-
-
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger" id="errorMessage">
-        @TempData["ErrorMessage"]
-    </div>
-}
 
 <div class="card mt-5">
     <div class="card-header bg-border text-white d-flex justify-content-between align-items-center">
@@ -66,26 +34,18 @@
                         <td>@item.AvailabilityStatus</td>
                         <td>
                             <!-- Edit Button -->
-                            <button class="btn btn-sm btn-warning px-3 py-0 edit-btn" 
-                                    data-id="@item.Id" 
-                            @(item.AvailabilityStatus == "Borrowed" ? "disabled" : "")>
+                            <button class="btn btn-sm btn-warning px-3 py-0 edit-btn" data-id="@item.Id" @(item.AvailabilityStatus == "Borrowed" ? "disabled" : "")>
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <!-- Archive Button -->
-                            <button type="button"
-                                    class="btn btn-sm btn-danger px-3 py-0 archive-btn"
-                                    data-id="@item.Id"
-                                    data-name="@item.Name"
-                            @(item.AvailabilityStatus == "Borrowed" ? "disabled" : "")>
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-
+                            <!-- Archive Form -->
+                            <form id="archiveForm-@item.Id" method="post" asp-action="ArchiveItem" asp-controller="Item" style="display:inline;">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button type="button" class="btn btn-sm btn-danger px-3 py-0 archive-btn" data-id="@item.Id" @(item.AvailabilityStatus == "Borrowed" ? "disabled" : "")>
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
                             <!-- Borrow Button -->
-                            <button class="btn btn-sm btn-primary px-3 py-0 borrow-btn" 
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#borrowItemModal" 
-                                    data-id="@item.Id" data-name="@item.Name" 
-                            @(item.AvailabilityStatus == "Borrowed" ? "disabled" : "")>
+                            <button class="btn btn-sm btn-primary px-3 py-0 borrow-btn" data-bs-toggle="modal" data-bs-target="#borrowItemModal" data-id="@item.Id" data-name="@item.Name" @(item.AvailabilityStatus == "Borrowed" ? "disabled" : "")>
                                  <i class="fa-solid fa-hand-holding-hand"></i>
                             </button>
                         </td>
@@ -95,6 +55,8 @@
         </table>
     </div>
 </div>
+
+
 
 <!-- Add Item Modal -->
 <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
@@ -123,32 +85,6 @@
         </div>
     </div>
 </div>
-
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" id="archiveConfirmModal" tabindex="-1" aria-labelledby="archiveConfirmModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <i class="bi bi-exclamation-triangle-fill text-danger fs-4 me-2"></i>
-                <h5 class="modal-title" id="deleteConfirmModalLabel">Delete Item</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body d-flex align-items-center gap-2">
-                <p class="mb-0">
-                    Are you sure you want to delete <strong id="archiveItemName"></strong>?
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <form id="archiveForm" method="post" asp-action="ArchiveItem" asp-controller="Item" style="display: inline;">
-                    <input type="hidden" id="archiveItemId" name="id" />
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 
 <!-- Edit Item Modal -->
@@ -180,6 +116,30 @@
     </div>
 </div>
 
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="archiveConfirmModal" tabindex="-1" aria-labelledby="archiveConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="bi bi-exclamation-triangle-fill text-danger fs-4 me-2"></i>
+                <h5 class="modal-title" id="deleteConfirmModalLabel">Delete Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex align-items-center gap-2">
+                <p class="mb-0">
+                    Are you sure you want to delete <strong id="archiveItemName"></strong>?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="archiveForm" method="post" asp-action="ArchiveItem" asp-controller="Item" style="display: inline;">
+                    <input type="hidden" id="archiveItemId" name="id" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Borrow Item Modal -->
