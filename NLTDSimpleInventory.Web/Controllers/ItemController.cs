@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NLTDSimpleInventory.BusinessLayer.Interfaces;
 using NLTDSimpleInventory.DataLayer.Models;
 using NLTDSimpleInventory.Web.Models;
@@ -9,15 +10,19 @@ namespace NLTDSimpleInventory.Controllers
     public class ItemController : Controller
     {
         private readonly IItemService _itemService;
+        private readonly ILogger<ItemController> _logger;
 
-        public ItemController(IItemService itemService)
+        public ItemController(IItemService itemService, ILogger<ItemController> logger)
         {
             _itemService = itemService;
+            _logger = logger;
         }
 
         public IActionResult Index()
         {
-            var items = _itemService.GetAllItems();
+            try
+            {
+                var items = _itemService.GetAllItems();
 
             var viewModel = items.Select(item => new ItemViewModel
             {
@@ -29,6 +34,13 @@ namespace NLTDSimpleInventory.Controllers
             }).ToList();
 
             return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving items list: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+                TempData["Error"] = "An unexpected error occurred while retrieving item data.";
+                throw;
+            }
         }
 
         [HttpPost]
@@ -36,9 +48,11 @@ namespace NLTDSimpleInventory.Controllers
         {
             if (!ModelState.IsValid)
             {
+                TempData["Error"] = "Invalid item data. Please check required fields.";
                 return RedirectToAction("Index");
             }
-
+            try
+            {
             var newItem = new Item
             {
                 Name = model.Name,
@@ -49,13 +63,21 @@ namespace NLTDSimpleInventory.Controllers
             };
 
             _itemService.AddItem(newItem);
-            TempData["ItemAddMsg"] = "Item added successfully!";
+            TempData["Success"] = "Item added successfully!";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding item: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+                TempData["Error"] = "An unexpected error occurred while adding the item.";
+            }
             return RedirectToAction("Index");
         }
 
         // GET: Show the edit form with current item data
         public IActionResult EditItem(int id)
         {
+            try
+            {
             var item = _itemService.GetAllItems().FirstOrDefault(i => i.Id == id);
             if (item == null)
             {
@@ -68,7 +90,14 @@ namespace NLTDSimpleInventory.Controllers
                 Description = item.Description
             };
 
-            return PartialView("_EditItemModal", editModel);   
+            return PartialView("_EditItemModal", editModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving item for editing with ID {ItemId}: {Message}\nStackTrace: {StackTrace}", id, ex.Message, ex.StackTrace);
+                TempData["Error"] = "An unexpected error occurred while loading item data.";
+                return RedirectToAction("Index");
+            }
         }
 
         // POST: Update item details
@@ -77,22 +106,39 @@ namespace NLTDSimpleInventory.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid input.");
+                TempData["Error"] = "Invalid item data.";
+                return RedirectToAction("Index");
             }
 
+            try
+            {
             var item = _itemService.GetAllItems().FirstOrDefault(i => i.Id == id);
             if (item == null)
             {
-                return NotFound();
+                    TempData["Error"] = "Item not found.";
+                    return RedirectToAction("Index");
             }
 
-            item.Name = model.Name;
+                if (item.Name == model.Name && item.Description == model.Description)
+                {
+                    return RedirectToAction("Index");
+                }
+
+
+                item.Name = model.Name;
             item.Description = model.Description;
             item.UpdatedAt = DateTime.UtcNow;
 
             _itemService.UpdateItem(item);
 
-            TempData["ItemUpdateMsg"] = "Item updated successfully!";
+            TempData["Success"] = "Item updated successfully!";
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating item: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+                TempData["Error"] = "An unexpected error occurred while updating the item.";
+            }
             return RedirectToAction("Index");
         }
 
@@ -102,12 +148,18 @@ namespace NLTDSimpleInventory.Controllers
             try
             {
                 _itemService.ArchiveItem(id);
-                TempData["ItemArchiveMsg"] = "Item archived successfully!";
+                TempData["Success"] = "Item archived successfully!";
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                TempData["ErrorMessage"] = "Item not found!";
+                _logger.LogWarning(ex, "Archive failed: Item not found with ID {Id}", id);
+                TempData["Error"] = "Item not found!";
                 return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error archiving item: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+                TempData["Error"] = "An unexpected error occurred while archiving the item.";
             }
 
             return RedirectToAction("Index");

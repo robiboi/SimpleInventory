@@ -3,22 +3,26 @@ using NLTDSimpleInventory.BusinessLayer.Interfaces;
 using NLTDSimpleInventory.BusinessLayer.Services;
 using NLTDSimpleInventory.DataLayer.Models;
 using NLTDSimpleInventory.Web.Models;
+using Microsoft.Extensions.Logging;
 
 namespace NLTDSimpleInventory.Web.Controllers
 {
     public class BorrowersController : Controller
     {
         private readonly IBorrowerService _borrowerService;
+        private readonly ILogger<BorrowersController> _logger;
 
-        public BorrowersController(IBorrowerService borrowerService)
+        public BorrowersController(IBorrowerService borrowerService, ILogger<BorrowersController> logger)
         {
             _borrowerService = borrowerService;
+            _logger = logger;
         }
 
         public IActionResult Index()
         {
+            try
+            {
             var borrowers = _borrowerService.GetAllBorrowers();
-
             var viewModel = borrowers.Select(b => new BorrowersViewModel
             {
                 Id = b.Id,
@@ -34,11 +38,22 @@ namespace NLTDSimpleInventory.Web.Controllers
             }).ToList();
 
             return View(viewModel);
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving borrowers list: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+                TempData["Error"] = "An unexpected error occurred while retrieving borrower data.";
+                throw;
+            }
         }
 
         [HttpGet]
         public IActionResult Create(string newBorrowerName, string newBorrowerAddress, int itemId, DateTime dateBorrowed)
         {
+            try
+            {
+
             if (string.IsNullOrWhiteSpace(newBorrowerName) || string.IsNullOrWhiteSpace(newBorrowerAddress))
             {
                 TempData["Error"] = "Please provide the new borrower's name and address.";
@@ -53,11 +68,20 @@ namespace NLTDSimpleInventory.Web.Controllers
                 borrowerId = newBorrower.Id,
                 dateBorrowed = dateBorrowed.ToString("yyyy-MM-dd")
             });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating new borrower: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+                TempData["Error"] = "An unexpected error occurred while creating the borrower.";
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpGet]
         public IActionResult SearchBorrowers(string query)
         {
+            try
+            {
             var borrowers = _borrowerService.SearchBorrowersByName(query);
 
             var results = borrowers.Select(b => new BorrowerSearchResultViewModel
@@ -67,12 +91,22 @@ namespace NLTDSimpleInventory.Web.Controllers
             }).ToList();
 
             return Json(results);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error searching borrowers: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+                TempData["Error"] = "An unexpected error occurred while searching for borrowers.";
+                return Json(new { success = false, message = "Error occurred while searching." });
+            }
+
         }
 
         // GET: Show the edit form with current borrower data
         public IActionResult EditBorrower(int id)
         {
-            var borrower = _borrowerService.GetAllBorrowers().FirstOrDefault(b => b.Id == id);
+            try
+            {
+                var borrower = _borrowerService.GetAllBorrowers().FirstOrDefault(b => b.Id == id);
             if (borrower == null)
             {
                 return NotFound();
@@ -86,6 +120,13 @@ namespace NLTDSimpleInventory.Web.Controllers
 
             ViewData["BorrowerId"] = borrower.Id; // Optional, if needed in view
             return PartialView("_EditBorrowerModal", model);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving borrower for editing with ID {BorrowerId}: {Message}\nStackTrace: {StackTrace}", id, ex.Message, ex.StackTrace);
+                TempData["Error"] = "An unexpected error occurred while loading borrower data.";
+                return RedirectToAction("Index");
+            }
         }
 
         // POST: Update borrower details
@@ -96,6 +137,8 @@ namespace NLTDSimpleInventory.Web.Controllers
             {
                 return BadRequest("Invalid input.");
             }
+            try
+            {
 
             var borrower = _borrowerService.GetAllBorrowers().FirstOrDefault(b => b.Id == id);
             if (borrower == null)
@@ -108,8 +151,15 @@ namespace NLTDSimpleInventory.Web.Controllers
 
             _borrowerService.UpdateBorrower(borrower);
 
-            TempData["BorrowerUpdateMsg"] = "Borrower updated successfully!";
+            TempData["Success"] = "Borrower updated successfully!";
             return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating borrower with ID {BorrowerId}: {Message}\nStackTrace: {StackTrace}", id, ex.Message, ex.StackTrace);
+                TempData["Error"] = "An unexpected error occurred while updating the borrower.";
+                throw;
+            }
         }
     }
 }

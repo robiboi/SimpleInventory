@@ -76,6 +76,7 @@ namespace NLTDSimpleInventory.Web.Controllers
 
             TempData["Success"] = "Item successfully borrowed.";
             return RedirectToAction("Index", "Item");
+        }
 
         public IActionResult ReturnItem(int id)
         {

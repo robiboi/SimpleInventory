@@ -65,11 +65,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const newBorrowerCheckbox = document.getElementById("IsNewBorrower");
     const newBorrowerFields = document.getElementById("newBorrowerFields");
+    const searchBorrowerInput = document.getElementById("searchBorrowerInput");
 
-    IsNewBorrower.addEventListener("change", function () {
-        newBorrowerFields.style.display = this.checked ? "block" : "none";
-        searchBorrowerInput.disabled = this.checked;
-    });
+    if (newBorrowerCheckbox && newBorrowerFields && searchBorrowerInput) {
+        newBorrowerCheckbox.addEventListener("change", function () {
+            newBorrowerFields.style.display = this.checked ? "block" : "none";
+            searchBorrowerInput.disabled = this.checked;
+        });
+    }
 
     const borrowButtons = document.querySelectorAll(".borrow-btn");
     const itemInput = document.getElementById("ItemInput");
@@ -85,13 +88,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    document.getElementById("searchBorrowerInput").addEventListener("input", function () {
-        search(this.value.trim(), "/Borrowers/SearchBorrowers", "borrowerResults", (id, name) => {
-            document.getElementById("searchBorrowerInput").value = name;
-            document.getElementById("selectedBorrowerId").value = id;
-            document.getElementById("borrowerResults").innerHTML = "";
+    if (searchBorrowerInput) {
+        searchBorrowerInput.addEventListener("input", function () {
+            search(this.value.trim(), "/Borrowers/SearchBorrowers", "borrowerResults", (id, name) => {
+                searchBorrowerInput.value = name;
+                document.getElementById("selectedBorrowerId").value = id;
+                document.getElementById("borrowerResults").innerHTML = "";
+            });
         });
-    });
+    }
 
     var successMessage = document.getElementById("successMessage");
     if (successMessage) {
@@ -104,26 +109,29 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll('.edit-btn').forEach(button => {
         button.addEventListener('click', function () {
             var itemId = this.getAttribute('data-id');
-            var itemName = this.closest('tr').querySelector('td:nth-child(2)').textContent;
-            var itemDescription = this.closest('tr').querySelector('td:nth-child(3)').textContent;
+            var row = this.closest('tr');
+            var itemName = row.querySelector('td:nth-child(2)').textContent.trim();
+            var itemDescription = row.querySelector('td:nth-child(3)').textContent.trim();
 
-            if (document.getElementById('editItemId')) {
-                // If it's an item modal
-                document.getElementById('editItemId').value = itemId;
+            const editItemId = document.getElementById('editItemId');
+            const editBorrowerId = document.getElementById('editBorrowerId');
+
+            if (editItemId) {
+                // Item modal
                 document.getElementById('editItemName').value = itemName;
                 document.getElementById('editItemDescription').value = itemDescription;
+                editItemId.value = itemId;
 
                 var editModal = new bootstrap.Modal(document.getElementById('editItemModal'));
                 editModal.show();
-            } else {
-                // If it's a borrower modal
-                var borrowerName = this.closest('tr').querySelector('td:nth-child(1)').textContent.trim();
-                var borrowerAddress = this.closest('tr').querySelector('td:nth-child(2)').textContent.trim();
+            } else if (editBorrowerId) {
+                // Borrower modal
+                var borrowerName = row.querySelector('td:nth-child(2)').textContent.trim();
+                var borrowerAddress = row.querySelector('td:nth-child(3)').textContent.trim();
 
-                document.getElementById('editBorrowerId').value = itemId;
                 document.getElementById('editBorrowerName').value = borrowerName;
                 document.getElementById('editBorrowerAddress').value = borrowerAddress;
-
+                editBorrowerId.value = itemId;
                 document.getElementById('editBorrowerForm').action = `/Borrowers/EditBorrower/${itemId}`;
 
                 var editBorrowerModal = new bootstrap.Modal(document.getElementById('editBorrowerModal'));
