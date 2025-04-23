@@ -28,13 +28,13 @@ namespace NLTDSimpleInventory.Web.Controllers
                 Id = b.Id,
                 Name = b.Name,
                 Address = b.Address,
-                BorrowHistory = b.BorrowedItems.Select(bi => new BorrowedItemHistoryViewModel
+                BorrowHistory = [.. b.BorrowedItems.Select(bi => new BorrowedItemHistoryViewModel
                 {
                     ItemName = bi.Item.Name,
                     ItemSKU = bi.Item.ItemSKU,
                     DateBorrowed = bi.DateBorrowed.ToString("yyyy-MM-dd"),
                     DateReturned = bi.DateReturned?.ToString("yyyy-MM-dd") ?? "Not Returned"
-                }).ToList()
+                })]
             }).ToList();
 
             return View(viewModel);
@@ -56,7 +56,7 @@ namespace NLTDSimpleInventory.Web.Controllers
 
             if (string.IsNullOrWhiteSpace(newBorrowerName) || string.IsNullOrWhiteSpace(newBorrowerAddress))
             {
-                TempData["Error"] = "Please provide the new borrower's name and address.";
+                TempData["BorrowerError"] = "Please provide the new borrower's name and address.";
                 return RedirectToAction("Index", "Item");
             }
 

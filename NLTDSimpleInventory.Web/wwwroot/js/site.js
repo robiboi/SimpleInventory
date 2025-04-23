@@ -162,14 +162,16 @@
     // Return item Modal
     const returnModalEl = document.getElementById('returnConfirmModal');
 
-    returnModalEl.addEventListener('show.bs.modal', function (event) {
-        const button = event.relatedTarget;
-        const itemId = button.getAttribute('data-id');
-        const itemName = button.getAttribute('data-name');
+    if (returnModalEl) {
+        returnModalEl.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const itemId = button.getAttribute('data-id');
+            const itemName = button.getAttribute('data-name');
 
-        document.getElementById('returnItemId').value = itemId;
-        document.getElementById('returnItemName').textContent = itemName;
-    });
+            document.getElementById('returnItemId').value = itemId;
+            document.getElementById('returnItemName').textContent = itemName;
+        });
+    }
 
     // Auto-hide alerts
     setTimeout(function () {
@@ -177,6 +179,7 @@
             alert.style.display = 'none';
         });
     }, 3000);
+
 });
 
 function search(query, endpoint, resultContainer, onSelect) {

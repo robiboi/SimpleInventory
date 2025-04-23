@@ -19,7 +19,11 @@ namespace NLTDSimpleInventory.Web.Controllers
         {
             var borrowedItems = _borrowedItemService.GetAllBorrowedItems();
 
-            var viewModel = borrowedItems.Select(b => new BorrowedViewModel
+            var sortedItems = borrowedItems
+                .OrderBy(b => b.DateReturned.HasValue)      
+                .ToList();
+
+            var viewModel = sortedItems.Select(b => new BorrowedViewModel
             {
                 Id = b.Id,
                 ItemName = b.Item.Name,

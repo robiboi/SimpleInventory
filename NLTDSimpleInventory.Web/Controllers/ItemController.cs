@@ -24,16 +24,18 @@ namespace NLTDSimpleInventory.Controllers
             {
                 var items = _itemService.GetAllItems();
 
-            var viewModel = items.Select(item => new ItemViewModel
-            {
-                Id = item.Id,
-                ItemSKU = item.ItemSKU,
-                Name = item.Name,
-                Description = item.Description,
-                IsAvailable = item.IsAvailable
-            }).ToList();
+                var viewModel = items
+                    .OrderByDescending(item => item.IsAvailable)  
+                    .Select(item => new ItemViewModel
+                    {
+                        Id = item.Id,
+                        ItemSKU = item.ItemSKU,
+                        Name = item.Name,
+                        Description = item.Description,
+                        IsAvailable = item.IsAvailable
+                    }).ToList();
 
-            return View(viewModel);
+                return View(viewModel);
             }
             catch (Exception ex)
             {

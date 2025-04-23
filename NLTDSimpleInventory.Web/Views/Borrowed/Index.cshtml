@@ -23,6 +23,7 @@
                     <th>Borrower</th>
                     <th>Date Borrowed</th>
                     <th>Date Returned</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -35,7 +36,18 @@
                         <td>@borrowedItem.DateBorrowed</td>
                         <td>@borrowedItem.DateReturned</td>
                         <td>
-                            <button class="btn btn-sm btn-primary return-btn"
+                            <span class="badge px-2 py-1 rounded-pill small
+                                @(borrowedItem.DateReturnedRaw != null
+                                    ? "bg-success text-white opacity-50"
+                                    : "bg-danger text-white")">
+                                @(borrowedItem.DateReturnedRaw != null ? "Returned" : "Borrowed")
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm px-3 py-0 return-btn
+                                    @(borrowedItem.DateReturnedRaw != null
+                                        ? "btn-secondary disabled"
+                                        : "btn-primary")"
                                     data-id="@borrowedItem.Id"
                                     data-name="@borrowedItem.ItemName"
                                     data-bs-toggle="modal"
